@@ -1,4 +1,4 @@
-# eth2stats-dashboard
+# network-vanguard-stats-dashboard
 
 The dashboard can connect to multiple networks so you only need a single instance running.
 

@@ -1,5 +1,5 @@
 {
-  "name": "eth2stats-dashboard",
+  "name": "network-vanguard-stats-dashboard",
   "version": "0.0.1",
   "description": "Eth2stats dashboard",
   "main": "index.js",

@@ -23,7 +23,7 @@ jobs:
 
       - name: Build Docker Image
         run: |-
-          docker build --build-arg -t eu.gcr.io/l15-testnet/eth2stats-dashboard:latest .
+          docker build --build-arg -t eu.gcr.io/l15-testnet/network-vanguard-stats-dashboard:latest .
 
       - name: Authorize GCP
         uses: google-github-actions/setup-gcloud@master
@@ -34,4 +34,4 @@ jobs:
       - name: Authenticate docker and push image to GCR
         run: |-
           gcloud auth configure-docker -q
-          docker push eu.gcr.io/l15-testnet/eth2stats-dashboard:latest
+          docker push eu.gcr.io/l15-testnet/network-vanguard-stats-dashboard:latest
