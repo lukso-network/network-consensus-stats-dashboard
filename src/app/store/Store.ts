@@ -104,7 +104,7 @@ export class Store {
 
     constructor(notify: Notifications) {
         this.notify = notify;
-        this.stats = new Stats();
+        this.stats = new Stats(this);
 
         this.clientStore = new ClientsStore(this);
         this.websocketsService = new Websockets(this);
