@@ -30,8 +30,7 @@ export const Logo: React.FC<ILogoProps> = (props) => (
         </svg>
         <div className="hidden sm:flex items-center">
             <div className="ml-4 flex">
-                <p className="logo-text font-sm font-bold text-white">eth2stats</p>
-                <p className="font-xxs font-semibold text-grey-500 ml-1 -mt-1">(alpha)</p>
+                <p className="logo-text font-sm font-bold text-white">LUKSO Stats</p>
             </div>
             {
                 props.network &&
