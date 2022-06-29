@@ -31,7 +31,8 @@ export const Table: React.FC = observer(() => {
                         :
                         client.clientVersionStatus === "ok"
                             ?
-                            <span className="text-alethio-green">Your LUKSO stats-client is up-to-date. High five!</span>
+                            <span className="text-alethio-green">Your LUKSO stats-client is up-to-date. High five!
+                            </span>
                             :
                             <span className="text-grey-500">The client version is unknown.</span>
                 }
