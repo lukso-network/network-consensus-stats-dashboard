@@ -1,22 +1,12 @@
 {
     "networks": [
         {
-            "name": "Sapphire Testnet",
-            "path": "/sapphire-testnet",
-            "joinURL": "https://prylabs.net/participate",
-            "HTTP_API": "https://api.sapphire.eth2stats.io/api",
-            "WS_API": "wss://api.sapphire.eth2stats.io/ws",
-            "SERVER_ADDR": "grpc.sapphire.eth2stats.io:443",
-            "SECONDS_PER_SLOT": 6
-        },
-        {
-            "name": "Lighthouse Testnet5",
-            "path": "/lighthouse-testnet5",
-            "joinURL": "https://lighthouse-book.sigmaprime.io/become-a-validator.html",
-            "HTTP_API": "https://api.summer.eth2stats.io/api",
-            "WS_API": "wss://api.summer.eth2stats.io/ws",
-            "SERVER_ADDR": "grpc.summer.eth2stats.io:443",
-            "SECONDS_PER_SLOT": 6
+            "name": "L16-testnet",
+            "path": "/",
+            "HTTP_API": "https://api.stats.consensus.l16.lukso.network/api",
+            "joinURL": "https://docs.lukso.tech/networks/l16-testnet/#how-to-participate",
+            "WS_API": "wss://api.stats.consensus.l16.lukso.network/ws",
+            "SERVER_ADDR": "stats.consensus.l16.lukso.network"
         }
     ]
 }
