@@ -1,7 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
 var fs = require("fs");
-var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+var TerserPlugin = require('terser-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var InterpolateHtmlPlugin = require('interpolate-html-plugin');
@@ -17,6 +17,8 @@ function getConfig(isProduction) {
     var sourcePublicRoot = path.join(__dirname, "src/public");
     var assetsRoot = path.join(__dirname, "src/assets");
     var outputRoot = path.join(__dirname, "dist");
+    var tsConfigJsonFilename = "tsconfig.webpack.json";
+    var tsConfigPath = path.join(__dirname, tsConfigJsonFilename);
 
     var localesInfo = JSON.parse(fs.readFileSync(path.join(appRoot, "translation", "locales.json"), "utf8"));
     var defaultLocale = localesInfo.find(l => !!l.default).locale;
@@ -24,13 +26,12 @@ function getConfig(isProduction) {
 
     var translation = require(path.join(appRoot, "translation", defaultLocale + ".json"));
 
-    var tsConfigJsonFilename = "tsconfig.webpack.json";
 
     var plugins = [
         new ForkTsCheckerWebpackPlugin({
-            tsconfig: path.resolve(".", tsConfigJsonFilename),
-            tslint: path.resolve(".", isProduction ? "tslint.prod.json" : "tslint.json"),
-            async: false
+            typescript: {
+                configFile: tsConfigPath
+            }
         }),
         // These are preprocessor constants which are replaced inline (that's why the extra quotes)
         new webpack.DefinePlugin({
@@ -65,10 +66,6 @@ function getConfig(isProduction) {
         })
     ];
 
-    if (!isDebug) {
-        plugins.push(new webpack.HashedModuleIdsPlugin());
-    }
-
     return {
         mode: isDebug ? "development" : "production",
         context: appRoot,
@@ -81,8 +78,6 @@ function getConfig(isProduction) {
         },
         output: {
             path: outputRoot,
-            jsonpFunction: '__webpackJsonp',
-            hotUpdateFunction: '__webpackHotUpdate',
             sourcePrefix: '',
             crossOriginLoading: "anonymous",
             filename: "[name].bundle.js",
@@ -91,50 +86,51 @@ function getConfig(isProduction) {
             publicPath: "/"
         },
         optimization: isDebug ? void 0 : {
-            minimizer: [
-                new UglifyJsPlugin({
-                    uglifyOptions: {
-                        // Don't merge statements with comma. This makes breakpoints unusable in debugger.
-                        compress: {
-                            sequences: false,
-                            join_vars: false,
-                            // Dropping unused variables causes problems with libraries such as MobX
-                            unused: false,
-                            warnings: false,
-                            // FIX https://github.com/mishoo/UglifyJS2/issues/1317
-                            if_return: false,
-                            // FIX https://github.com/mishoo/UglifyJS2/issues/2498
-                            properties: false
-                        },
-                        mangle: {
-                            safari10: true
-                        }
+            moduleIds: 'deterministic',
+            minimize: true,
+            minimizer: [new TerserPlugin({
+                terserOptions: {
+                    // Don't merge statements with comma. This makes breakpoints unusable in debugger.
+                    compress: {
+                        sequences: false,
+                        join_vars: false,
+                        // Dropping unused variables causes problems with libraries such as MobX
+                        unused: false,
+                        if_return: false,
+                        properties: false
+                    },
+                    mangle: {
+                        safari10: true
                     },
                     sourceMap: true
-                })
-            ]
+                },
+            })]
         },
         module: {
             rules: [
                 {
                     test: /\.jsx?$/,
                     enforce: "pre",
-                    loader: "source-map-loader"
+                    use: "source-map-loader"
                 },
                 {
-                    test: /\.(t|j)sx?$/,
-                    loader: 'ts-loader?configFile=' + tsConfigJsonFilename,
-                    options: {
-                        transpileOnly: true
+                    test: /\.(t)sx?$/,
+                    use: {
+                        loader: 'ts-loader',
+                        options: {
+                            configFile: tsConfigJsonFilename
+                        }
                     },
                     exclude: /node_modules/
                 },
                 {
                     test: /\.(png|jpe?g|gif|svg)$/i,
-                    loader: 'url-loader',
-                    options: {
-                        limit: 8192,
-                        outputPath: "img/"
+                    use: {
+                        loader: 'url-loader',
+                         options: {
+                            limit: 8192,
+                            outputPath: "img/"
+                        }
                     }
                 },
                 {

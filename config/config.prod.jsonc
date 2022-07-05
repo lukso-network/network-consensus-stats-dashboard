@@ -6,7 +6,8 @@
             "HTTP_API": "https://api.stats.consensus.l16.lukso.network/api",
             "joinURL": "https://docs.lukso.tech/networks/l16-testnet/#how-to-participate",
             "WS_API": "wss://api.stats.consensus.l16.lukso.network/ws",
-            "SERVER_ADDR": "stats.consensus.l16.lukso.network"
+            "SERVER_ADDR": "stats.consensus.l16.lukso.network",
+            "SECONDS_PER_SLOT": 6
         }
     ]
 }
